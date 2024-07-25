@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pokemon List</title>
+</head>
+<body>
+    <h1>Pokemon List</h1>
+    <input type="text" id="nameFilter" placeholder="Enter name to filter">
+    <input type="text" id="typeFilter" placeholder="Enter type to filter">
+    <button onclick="fetchPokemons()">Fetch Pokemons</button>
+    <ul id="pokemonList"></ul>
+
+    <script>
+        async function fetchPokemons() {
+            const name = document.getElementById('nameFilter').value;
+            const type = document.getElementById('typeFilter').value;
+            let url = `http://localhost:8000/api/v1/pokemons`;
+
+            if (name || type) {
+                url += '?';
+                if (name) url += `name=${name}`;
+                if (type) url += name ? `&type=${type}` : `type=${type}`;
+            }
+
+            const response = await fetch(url);
+            const pokemons = await response.json();
+
+            const pokemonList = document.getElementById('pokemonList');
+            pokemonList.innerHTML = '';
+            pokemons.forEach(pokemon => {
+                const li = document.createElement('li');
+                li.textContent = `Name: ${pokemon.name}, Type: ${pokemon.type}`;
+                const img = document.createElement('img');
+                img.src = pokemon.image;
+                li.appendChild(img);
+                pokemonList.appendChild(li);
+            });
+        }
+    </script>
+</body>
+</html>
