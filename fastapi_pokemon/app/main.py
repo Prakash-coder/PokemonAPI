@@ -4,7 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List, Optional
 from app.database import get_session
-from app.routers import v1
+from app.routers import v1, v2
 
 app = FastAPI()
 
@@ -16,3 +16,4 @@ async def read_root():
         return HTMLResponse(content=f.read(), status_code=200)
 
 app.include_router(v1.router, prefix="/api/v1")
+app.include_router(v2.router, prefix="/api/v2")
